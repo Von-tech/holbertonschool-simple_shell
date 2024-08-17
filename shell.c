@@ -1,53 +1,89 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
+#include "shell.h"
 
-#define PROMPT "#cisfun$ "
+/**
+ * sig_handler - checks if Ctrl C is pressed
+ * @sig_num: int
+ */
+void sig_handler(int sig_num)
+{
+	if (sig_num == SIGINT)
+	{
+		_puts("\n#cisfun$ ");
+	}
+}
 
-void execute_command(char *command);
+/**
+* _EOF - handles the End of File
+* @len: return value of getline function
+* @buff: buffer
+ */
+void _EOF(int len, char *buff)
+{
+	(void)buff;
+	if (len == -1)
+	{
+		if (isatty(STDIN_FILENO))
+		{
+			_puts("\n");
+			free(buff);
+		}
+		exit(0);
+	}
+}
+/**
+  * _isatty - verif if terminal
+  */
+
+void _isatty(void)
+{
+	if (isatty(STDIN_FILENO))
+		_puts("#cisfun$ ");
+}
+/**
+ * main - Shell
+ * Return: 0 on success
+ */
 
 int main(void)
 {
-    char *line = NULL;
-    size_t len = 0;
-    ssize_t read;
-    char *command;
+	ssize_t len = 0;
+	char *buff = NULL, *value, *pathname, **arv;
+	size_t size = 0;
+	list_path *head = '\0';
+	void (*f)(char **);
 
-    while (1)
-    {
-        
-        printf("%s", PROMPT);
-
-       
-        read = getline(&line, &len, stdin);
-        if (read == -1) 
-        {
-            if (line)
-                free(line);
-            printf("\n");
-            break;
-        }
-
-       
-        if (line[read - 1] == '\n')
-            line[read - 1] = '\0';
-
-
-        execute_command(line);
-    }
-
-    return 0;
+	signal(SIGINT, sig_handler);
+	while (len != EOF)
+	{
+		_isatty();
+		len = getline(&buff, &size, stdin);
+		_EOF(len, buff);
+		arv = splitstring(buff, " \n");
+		if (!arv || !arv[0])
+			execute(arv);
+		else
+		{
+			value = _getenv("PATH");
+			head = linkpath(value);
+			pathname = _which(arv[0], head);
+			f = checkbuild(arv);
+			if (f)
+			{
+				free(buff);
+				f(arv);
+			}
+			else if (!pathname)
+				execute(arv);
+			else if (pathname)
+			{
+				free(arv[0]);
+				arv[0] = pathname;
+				execute(arv);
+			}
+		}
+	}
+	free_list(head);
+	freearv(arv);
+	free(buff);
+	return (0);
 }
-
-void execute_command(char *command)
-{
-    char *argv[] = {command, NULL};
-    
-
-    if (execve(command, argv, NULL) == -1)
-    {
-        perror("./shell"); 
-    }
-}
-
