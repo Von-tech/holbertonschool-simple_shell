@@ -46,16 +46,21 @@ void prompt_user(void)
 
 /**
  * execute_command - Executes the command entered by the user.
- * @line: The command entered by the user.
+ * @line: The command entered by the user, including the command and arguments.
  */
 void execute_command(char *line)
 {
-	char *argv[2];
+	char *argv[BUFFER_SIZE];
 	pid_t pid;
 	int status;
+	int i = 0;
 
-	argv[0] = line;
-	argv[1] = NULL;
+	arg[i] = strtok(line, " ");
+	while (argv[i] != NULL)
+	{
+		i++;
+		argv[i] = strtok(NULL, " ");
+	}
 
 	pid = fork();
 	if (pid == -1)
