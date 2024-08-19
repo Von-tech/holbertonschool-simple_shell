@@ -50,17 +50,12 @@ void prompt_user(void)
  */
 void execute_command(char *line)
 {
-	char *argv[BUFFER_SIZE];
+	char *argv[2];
 	pid_t pid;
 	int status;
-	int i = 0;
 
-	arg[i] = strtok(line, " ");
-	while (argv[i] != NULL)
-	{
-		i++;
-		argv[i] = strtok(NULL, " ");
-	}
+	argv[0] = line;
+	argv[1] = NULL;
 
 	pid = fork();
 	if (pid == -1)
