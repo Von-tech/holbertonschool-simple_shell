@@ -7,6 +7,10 @@
 #include <string.h>
 #include <sys/wait.h>
 
+#define BUFFER_SIZE 1024
+
+extern char **environ;
+
 void execute_command(char *line);
 void prompt_user(void);
 
