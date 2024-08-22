@@ -9,7 +9,7 @@ In order to run this program,
 
 Clone This Repo
 
-`` git clone https://github.com/Von-tech/simple_shell ``
+`` git clone git@github.com:Von-tech/holbertonschool-simple_shell.git ``
 
 compile it with  
 
