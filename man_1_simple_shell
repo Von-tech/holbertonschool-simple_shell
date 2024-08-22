@@ -1,88 +1,103 @@
-.TH SIMPLE_SHELL 1 "August 07, 2022" "Holberton School" "General Commands Manual"
-
+.TH man 1 "20 November 2020" "0.20" "HSH man page"
 .SH NAME
-.B hsh\fR \- A simple command interpreter (simple_shell)
-
+.B hsh 
+- Simple Shell Studying purpose Holberton School
 .SH SYNOPSIS
-.B ./hsh
-.P
-.B [command] [option]
-.P
-.B./hsh\fR [options] [command] | file
-.P
-.B /bin/[command] [option]
+.B ./hsh 
+[command] [options] [FILE]
+.SH COPYRIGHT
+.B hsh 
+is Copyright (C) Ahmed Belhaj  and licensed under the MIT license.
 .SH DESCRIPTION
-.LP
-.B hsh\fR is a simple UNIX command language interpreter capable of executing commands Interactivly from \fBSTDIN\fR or piped from
-a file.
+.B hsh 
+(Simple Shell) is an end of semester project for students at Holberton School where we expore, 
+understand and build a working functional simple shell program.
+.B Overview
 
-Invocation
-.P
-        hsh  can  be invoked both interactively and non-interactively.  If hsh is invoked with standard input not connected to a terminal,it reads and executes received commands in order.If hsh is invoked with standard input connected to a terminal (determined by isatty(3)), an interactive shell is opened.  When executing interactively, hsh displays the prompt #(ಠ_ಠ)->$ when it is ready to read a command.
-Alternatively, if command line arguments are supplied upon invocation, hsh treats the first argument as a file from which to read commands.  The supplied file should contain one command per line.  hsh runs each of the commands contained in the file  in  order  before exiting.
+The simple shell is a simplified iteration of a command line interpreter, similar to 
+.B bash or 
+.B dash. 
+.I FORMAT [ARGUMENT]...
+.SH OPTIONS
+.B hsh
+operates in both 
+.I interactive 
+and 
+.I non-interactive
+ mode. The user may initiate 
+.B simple shell
+and begin working or initate 
+.B simple shell
+using commands meant to be run by the program.
+.SH ARGUMENTS
+The first argument, argument 0 is understood to be the command to be run by 
+.B simple shell
+and arguments following as modifiers or options.
+.SH INVOCATION
+.B hsh
+may be invoked with the same functionality in 
+.I interactive 
+or 
+.I non-interactive 
+mode.  The user may quit the program by typing "exit", "Ctrl + D",  on the command line.
+When the program quits or a command has been executed, 
+.B simple shell 
+returns with a new prompt: "$ "
 
-Environment
-         Upon invocation, hsh receives and copies the environment of the parent process in which it was exeucted.  This environment is an array of name-value strings describing variables in the format NAME=VALUE.
+.B Example
+.IP
 
-Command Execution
-.P
-After receiving a command, hsh tokenizes it into words using " " as a delimiter.  The first word is considered the command and all remaining words are considered arguments to that command.  hsh then proceeds with the following actions:
-        1. If the first character of the command is neither a slash (\) nor dot (.), the shell searches for it in the list of shell builtins.If there exists a shell builtin by that name, the builtin is invoked.
-        2. If the first character of the command is none of a slash (\), dot (.), nor builtin, hsh searches each element of the PATH  environmental variable for a directory containing an executable file by that name.
-        3. If the first character of the command is a slash (\) or dot (.) or either of the above searches was successful, the shell executes the named program with any remaining arguments given in a separate execution environment.
+$./hsh
 
-Exit Status
-         hsh returns the exit status of the last command executed, unless a syntax error occurs, with zero indicating success and non-zero  indicatingfailure. All builtins return zero on success and one or two on incorrect usage (indicated by a corresponding error message).
+$pwd
 
-.B Signals
-.in +2n
-While running in interactive mode, \fBshellby\fR ignores the keyboard input \fBCtrl+c\fR.
-Alternatively, an input of end-of-file (\fBCtrl+d\fR) will exit the program.
-.in
+Username@your-regular-prompt:~$
 
-.TP
-.B Builtin commands
+$
 
-.TP
-.BR env
-list all environment variables
+$/bin/pwd
 
-.TP
-.BR setenv " " [name] " " [value]
-sets the "name" environment variable with to value "value" or updates it if it already exists
+Username@your-regular-prompt:~$
+$
 
-.TP
-.BR unsetenv " " [name]
-deletes the "name" environment variable from the enviroment variables
+.SH RESERVED WORDS
+.B exit: 
+quits the program, exits the shell.
 
-.TP
-.BR cd " " [dir_path]
-changes the current working directory to "dir_path"
+.B env: 
+prints the environment variables
 
-.TP
-.BR Exit
-exit the shell
+.SH HISTORY
+The 
+.B history 
+built-in displays the history list, one command per line, preceded with line numbers, starting with 0. On exit the entire history is written to a file named
+.I simple_shell_history
+in the 
+.I $HOME
+directory.
+.SH SHELL BUILTIN COMMANDS
+The commands 
+.B exit
+,
+.B env
+,
+.B help
+and
+.B echo
+are handled automatically by 
+.B hsh
 
-.SH EXAMPLES
-.B Interactive
-       $ ./hsh
-       #(ಠ_ಠ)->$ /bin/ls
-       hsh main.c shell.c
-       #(ಠ_ಠ)->$
-       #(ಠ_ಠ)->$ exit
-       $
+.SH SEE ALSO
+.I sh(1)
+,
+.I bash(1)
+,
+.I _printf(3)
 
-
-.B Non Interactive
-       $ echo "/bin/ls" | ./hsh
-       hsh main.c shell.c test_ls_2
-       $
-       $ cat test_ls_2 | ./hsh
-       hsh main.c shell.c test_ls_2
-       hsh main.c shell.c test_ls_2
-       $
-
---
-AUTHORS
-
+.SH BUGS
+No Known bug , please 
+Report 
+.B hsh
+bugs to https://github.com/Von-tech/simple_shell/issues
+.SH AUTHOR
 Vonzell S. Carson
